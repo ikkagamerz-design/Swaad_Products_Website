@@ -4,6 +4,7 @@ import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
 import OrbitPacks from "@/components/OrbitPacks";
+import MapEmbed from "@/components/MapEmbed";
 import { Reveal } from "@/components/ui";
 import { ChaiCup, Rusk } from "@/components/home/Props";
 import { GmailLogo, IcArrow, IcFacebook, IcInstagram, IcPhone, IcPin, IcWhatsapp, IcYoutube } from "@/components/icons";
@@ -43,7 +44,7 @@ export default function Contact() {
       </PageHero>
 
       {/* bento of ways to reach us */}
-      <section className="block cream">
+      <section className="block scene scene-elaichi">
         <div className="wrap">
           <Reveal className="sec-head">
             <p className="eyebrow">Reach us your way</p>
@@ -154,7 +155,7 @@ export default function Contact() {
 
       {/* map with our pin */}
       <section className="mapsec">
-        <iframe className="mapsec-frame" src={mapEmbed} title="Swaad location on Google Maps" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+        <MapEmbed embed={mapEmbed} link={`https://www.google.com/maps/search/?api=1&query=${LATLNG}`} />
         <div className="wrap mapsec-wrap">
           <Reveal className="map-card">
             <div className="map-card-top">
@@ -178,7 +179,7 @@ export default function Contact() {
       </section>
 
       {/* message */}
-      <section className="block">
+      <section className="block scene scene-milk">
         <div className="wrap msg-grid">
           <Reveal className="msg-copy">
             <p className="eyebrow">Send a message</p>

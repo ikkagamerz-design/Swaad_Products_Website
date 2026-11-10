@@ -1,17 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { site } from "@/lib/site";
+import { sendToWhatsapp } from "@/lib/site";
+import { IcWhatsapp } from "@/components/icons";
 
-/** Opens the visitor's mail app with the message filled in (no backend needed). */
+/** Opens WhatsApp with the visitor's message filled in, addressed to our customer-care number. */
 export default function ContactForm() {
   const [f, setF] = useState({ name: "", phone: "", topic: "General enquiry", message: "" });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setF({ ...f, [k]: e.target.value });
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const body = `Name: ${f.name}\nMobile: ${f.phone}\nTopic: ${f.topic}\n\n${f.message}`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(`${f.topic} - ${f.name}`)}&body=${encodeURIComponent(body)}`;
+    sendToWhatsapp(
+      [
+        "*New Message – Swaad Website*",
+        "",
+        `*Name:* ${f.name}`,
+        `*Mobile:* ${f.phone}`,
+        `*Topic:* ${f.topic}`,
+        `*Message:* ${f.message.trim()}`,
+      ].join("\n"),
+    );
   };
   return (
     <form className="cform" onSubmit={submit}>
@@ -36,8 +45,8 @@ export default function ContactForm() {
         Message
         <textarea required rows={4} value={f.message} onChange={set("message")} placeholder="How can we help?" />
       </label>
-      <button className="btn btn-sun wide" type="submit">
-        Send message
+      <button className="btn btn-wa wide" type="submit">
+        <IcWhatsapp className="btn-ic" /> Send on WhatsApp
       </button>
     </form>
   );

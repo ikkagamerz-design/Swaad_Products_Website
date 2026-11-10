@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Hero from "@/components/home/Hero";
 import FlavorPanel from "@/components/home/FlavorPanel";
 import Stage from "@/components/home/Stage";
 import FlavorRail from "@/components/home/FlavorRail";
@@ -21,24 +20,20 @@ export default function Home() {
   return (
     <div className="home">
       <FlavorRail />
-      <Hero />
 
-      {homeProducts.map((p) => (
-        <FlavorPanel key={p.id} p={p} />
-      ))}
-
-      <InView as="section" className="river" data-flavor="jumbo" aria-label="All Swaad rusks" threshold={0.3}>
+      {/* top hero: "Made for chai" */}
+      <InView as="section" className="river river-top" data-flavor="milk" aria-label="Swaad rusk" threshold={0.2}>
         <div className="river-bg" />
         <div className="river-rays" aria-hidden />
-        <h2 className="river-title">
-          {["Made", "for", "chai."].map((w, i) => (
+        <h1 className="river-title">
+          {["Every", "bite,"].map((w, i) => (
             <span key={w} style={{ ["--d" as string]: i }}>{w}&nbsp;</span>
           ))}
           <br />
-          {["Every", "single", "day."].map((w, i) => (
-            <span key={w} className="hl" style={{ ["--d" as string]: i + 3 }}>{w}&nbsp;</span>
+          {["pure", "delight."].map((w, i) => (
+            <span key={w} className="hl" style={{ ["--d" as string]: i + 2 }}>{w}&nbsp;</span>
           ))}
-        </h2>
+        </h1>
         <div className="river-row">
           {products.map((p, i) => (
             <div key={p.id} className="river-item" style={{ ["--i" as string]: i }}>
@@ -62,12 +57,35 @@ export default function Home() {
         </div>
       </InView>
 
+      {homeProducts.map((p) => (
+        <FlavorPanel key={p.id} p={p} />
+      ))}
+
       <Stage />
 
-      <section className="faq" data-flavor="elaichi">
-        <div className="wrap faq-grid">
-          <h2>Questions?</h2>
-          <div>
+      {/* questions: painted farm scene, like the flavour panels */}
+      <InView as="section" className="pnl pnl-faq" data-flavor="elaichi" threshold={0.2}>
+        <div className="run" aria-hidden>
+          <div className="run-track">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <span key={i}>QUESTIONS&nbsp;·&nbsp;</span>
+            ))}
+          </div>
+        </div>
+        <Rusk className="pf pf1" />
+        <Cardamom className="pf pf2" />
+        <MilkDrop className="pf pf3" />
+        <Cardamom className="pf pf4" />
+        <div className="wrap pnl-grid">
+          <div className="pnl-side">
+            <p className="eyebrow">Good to know</p>
+            <h2>Got questions?</h2>
+            <p className="pnl-sub">Everything about freshness, flavours and becoming a distributor.</p>
+            <div className="pnl-pack">
+              <Image src={products[0].image} alt="Swaad Elaichi Rusk" width={products[0].w} height={products[0].h} sizes="(max-width: 760px) 40vw, 18vw" />
+            </div>
+          </div>
+          <div className="glass faq-list">
             {faqs.map(([q, a]) => (
               <details key={q}>
                 <summary>{q}</summary>
@@ -76,10 +94,27 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </InView>
 
-      <section className="cta-wrap" id="distributor">
-        <div className="cta-card">
+      {/* distributor: painted wheat scene */}
+      <InView as="section" className="pnl pnl-cta" id="distributor" data-flavor="jumbo" threshold={0.2}>
+        <div className="run" aria-hidden>
+          <div className="run-track">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <span key={i}>DISTRIBUTOR&nbsp;·&nbsp;</span>
+            ))}
+          </div>
+        </div>
+        <Rusk className="pf pf1" />
+        <Rusk className="pf pf5" />
+        <Cardamom className="pf pf2" />
+        <MilkDrop className="pf pf3" />
+        <div className="wrap pnl-grid">
+          <div className="pnl-packs" aria-hidden>
+            <Image className="pp pp-a" src={products[1].image} alt="" width={products[1].w} height={products[1].h} sizes="(max-width: 760px) 30vw, 14vw" />
+            <Image className="pp pp-b" src={products[2].image} alt="" width={products[2].w} height={products[2].h} sizes="(max-width: 760px) 40vw, 20vw" />
+            <Image className="pp pp-c" src={products[0].image} alt="" width={products[0].w} height={products[0].h} sizes="(max-width: 760px) 30vw, 14vw" />
+          </div>
           <div className="cta-copy">
             <p className="eyebrow">For distributors &amp; wholesalers</p>
             <h2>Become a Swaad distributor.</h2>
@@ -106,18 +141,18 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="cta-form">
-            <DistributorForm compact />
-            <p className="cta-alt">
-              Or call <a href={site.customerCareHref}>{site.customerCare}</a> ·{" "}
-              <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
-                WhatsApp us
-              </a>
-            </p>
+            <div className="glass cta-form">
+              <DistributorForm compact />
+              <p className="cta-alt">
+                Or call <a href={site.customerCareHref}>{site.customerCare}</a> ·{" "}
+                <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+                  WhatsApp us
+                </a>
+              </p>
+            </div>
           </div>
         </div>
-      </section>
+      </InView>
     </div>
   );
 }

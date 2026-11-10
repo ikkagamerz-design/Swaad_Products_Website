@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { nav, site, type Product } from "@/lib/site";
+import { homeProducts, nav, sendToWhatsapp, site, type Product } from "@/lib/site";
+import { IcArrow, IcFacebook, IcInstagram, IcPhone, IcWhatsapp, IcYoutube } from "@/components/icons";
 
 export function Nav() {
   const path = usePathname();
@@ -17,9 +18,71 @@ export function Nav() {
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
+  // lock page scroll + close on Esc while the mobile menu is open
+  useEffect(() => {
+    if (!open) return;
+    const html = document.documentElement;
+    html.style.overflow = "hidden";
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", esc);
+    return () => {
+      html.style.overflow = "";
+      window.removeEventListener("keydown", esc);
+    };
+  }, [open]);
   return (
     <header className={`nav${open ? " open" : ""}${solid ? " solid" : ""}`}>
-      <Link href="/" className="nav-logo" aria-label="Swaad home">
+      {/* mobile menu sheet */}
+      <div className="mnav" aria-hidden={!open} inert={!open}>
+        <p className="mnav-eyebrow">Menu</p>
+        <nav className="mnav-links" aria-label="Main">
+          {nav.map((n, i) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              className={path === n.href ? "on" : ""}
+              style={{ ["--i" as string]: i }}
+              onClick={() => setOpen(false)}
+            >
+              <span className="mn-num">0{i + 1}</span>
+              <span className="mn-label">{n.label}</span>
+              <span className="mn-arrow"><IcArrow /></span>
+            </Link>
+          ))}
+        </nav>
+        <div className="mnav-packs" aria-hidden>
+          {homeProducts.map((p, i) => (
+            <Image key={p.id} src={p.image} alt="" width={p.w} height={p.h} sizes="90px" style={{ ["--i" as string]: i }} />
+          ))}
+        </div>
+        <div className="mnav-cta">
+          <a className="btn" href={site.customerCareHref}>
+            <IcPhone className="btn-ic" /> Call us
+          </a>
+          <a className="btn btn-wa" href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+            <IcWhatsapp className="btn-ic" /> WhatsApp
+          </a>
+        </div>
+        <div className="mnav-foot">
+          <span>Pukhrayan · Kanpur Dehat</span>
+          <span className="mnav-social">
+            <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IcInstagram /></a>
+            <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><IcFacebook /></a>
+            <a href={site.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube"><IcYoutube /></a>
+          </span>
+        </div>
+      </div>
+      <Link
+        href={path}
+        className="nav-logo"
+        aria-label="Back to top"
+        onClick={(e) => {
+          // logo scrolls the current page smoothly back to the very top
+          e.preventDefault();
+          setOpen(false);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      >
         <Image src="/logo.png" alt="Swaad" width={640} height={441} priority />
       </Link>
       <nav className="nav-links">
@@ -38,7 +101,7 @@ export function Nav() {
         </svg>
         WhatsApp
       </a>
-      <button className="nav-toggle" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
+      <button className="nav-toggle" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
         <span />
         <span />
       </button>
@@ -119,10 +182,16 @@ export function DistributorForm({ compact = false }: { compact?: boolean }) {
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<Field>) => setF({ ...f, [k]: e.target.value });
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const body = `Name: ${f.name}\nPhone: ${f.phone}\nCity / Area: ${f.city}\nBusiness type: ${f.business}\n\n${f.message}`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      `Distributor enquiry - ${f.city || f.name}`
-    )}&body=${encodeURIComponent(body)}`;
+    const lines = [
+      "*New Distributor Enquiry – Swaad Website*",
+      "",
+      `*Name:* ${f.name}`,
+      `*Mobile:* ${f.phone}`,
+      `*City / Area:* ${f.city}`,
+      `*I am a:* ${f.business}`,
+    ];
+    if (f.message.trim()) lines.push(`*Message:* ${f.message.trim()}`);
+    sendToWhatsapp(lines.join("\n"));
   };
   if (compact)
     return (
@@ -130,8 +199,8 @@ export function DistributorForm({ compact = false }: { compact?: boolean }) {
         <input required placeholder="Your name" value={f.name} onChange={set("name")} autoComplete="name" aria-label="Your name" />
         <input required type="tel" placeholder="Mobile number" value={f.phone} onChange={set("phone")} autoComplete="tel" aria-label="Mobile number" />
         <input required placeholder="City" value={f.city} onChange={set("city")} aria-label="City" />
-        <button className="btn btn-sun" type="submit">
-          Send enquiry
+        <button className="btn btn-wa" type="submit">
+          <IcWhatsapp className="btn-ic" /> Send on WhatsApp
         </button>
       </form>
     );
@@ -163,12 +232,9 @@ export function DistributorForm({ compact = false }: { compact?: boolean }) {
         <textarea rows={4} value={f.message} onChange={set("message")} placeholder="Tell us about your area and current business" />
       </label>
       <div className="form-actions wide">
-        <button className="btn" type="submit">
-          Send enquiry by email
+        <button className="btn btn-wa" type="submit">
+          <IcWhatsapp className="btn-ic" /> Send enquiry on WhatsApp
         </button>
-        <a className="btn btn-ghost" href={site.whatsapp} target="_blank" rel="noopener noreferrer">
-          Or chat on WhatsApp
-        </a>
       </div>
     </form>
   );

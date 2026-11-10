@@ -9,6 +9,8 @@ export const site = {
   phoneHref: "tel:+918090948179",
   email: "swaad.officials@gmail.com",
   whatsapp: "https://wa.me/message/CAQ26T534G2ME1",
+  /** website forms send their filled-in message to this WhatsApp number */
+  formWhatsapp: "918303388614",
   address: ["Bypass Road, Sapna Hospital", "Patel Chauk, Pukhrayan", "Kanpur Dehat (U.P.) - 209111"],
   fssai: "12725046000066",
   gst: "09MOXPS5131P2ZH",
@@ -18,6 +20,14 @@ export const site = {
     youtube: "https://www.youtube.com/@Swaad_Products",
   },
 };
+
+/** Opens WhatsApp (app on phones, WhatsApp Web on desktop) with `text` ready to send to our form number. */
+export function sendToWhatsapp(text: string) {
+  const url = `https://wa.me/${site.formWhatsapp}?text=${encodeURIComponent(text)}`;
+  const w = window.open(url, "_blank"); // null when a popup blocker steps in
+  if (w) w.opener = null;
+  else window.location.href = url;
+}
 
 export type Product = {
   id: "elaichi" | "milk" | "jumbo";
