@@ -442,36 +442,7 @@ h3 { font-size: 1.4rem; }
 @keyframes steam { 0% { transform: translateY(14px); opacity: 0; stroke-dashoffset: 60; } 40% { opacity: 0.75; } 100% { transform: translateY(-18px); opacity: 0; stroke-dashoffset: -40; } }
 .river-ribbon { position: absolute; z-index: 4; left: -5%; right: -5%; bottom: 4%; transform: rotate(-3deg); background: #3a1a07; color: #ffe2a6; white-space: nowrap; overflow: hidden; padding: 12px 0; font-family: var(--font-display), sans-serif; font-weight: 900; font-size: clamp(0.9rem, 1.6vw, 1.3rem); letter-spacing: 0.06em; text-transform: uppercase; box-shadow: 0 14px 30px -14px rgba(0, 0, 0, 0.6); }
 .river-ribbon .run-track { animation-duration: 40s; }
-
-/* ---------------------------------------------------------------- stage */
-.stage { position: relative; height: 100svh; min-height: 600px; overflow: hidden; isolation: isolate; }
-.stage-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; background-color: var(--c, #f7a556); transition: background-color 0.9s ease; }
-.stage-bg::before { content: ""; position: absolute; inset: 0; z-index: 1; background: radial-gradient(ellipse 55% 50% at 50% 52%, rgba(255, 252, 240, 0.85) 0%, rgba(255, 250, 235, 0.35) 45%, transparent 70%), linear-gradient(transparent 70%, rgba(60, 25, 5, 0.18)); }
-.stage-bg::after { content: ""; position: absolute; left: 50%; top: 52%; width: 200vmax; height: 200vmax; background: repeating-conic-gradient(rgba(255, 255, 255, 0.16) 0deg 6deg, transparent 6deg 15deg); -webkit-mask: radial-gradient(circle, #000 0%, transparent 40%); mask: radial-gradient(circle, #000 0%, transparent 40%); animation: spin 120s linear infinite; }
-.stage-word { position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%); font-family: var(--font-display), sans-serif; font-weight: 900; font-size: clamp(6rem, 22vw, 22rem); letter-spacing: -0.05em; text-transform: uppercase; color: rgba(255, 255, 255, 0.45); white-space: nowrap; pointer-events: none; animation: wordin 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-@keyframes wordin { from { opacity: 0; letter-spacing: 0.04em; } }
-.stage-packs { position: absolute; inset: 0; }
-.stage-packs::after { content: ""; position: absolute; left: 50%; top: 86%; width: min(34vw, 420px); height: 34px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(rgba(60, 25, 5, 0.32), transparent 70%); }
-.sp { position: absolute; padding: 0; border: 0; background: none; cursor: pointer; transform: translate(-50%, -50%); transition: left 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), top 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s, filter 0.6s; }
-.sp img { height: 100%; width: auto; max-width: none; filter: drop-shadow(0 30px 26px rgba(60, 25, 5, 0.35)); animation: bob 5s ease-in-out infinite; }
-.sp-0 { left: 50%; top: 54%; height: min(60svh, 560px); z-index: 3; cursor: default; }
-.sp-1 { left: 74%; top: 36%; height: min(26svh, 240px); z-index: 1; opacity: 0.92; filter: saturate(0.85); }
-.sp-2 { left: 26%; top: 38%; height: min(26svh, 240px); z-index: 1; opacity: 0.92; filter: saturate(0.85); }
-.sp-1 img { animation-delay: -1.7s; } .sp-2 img { animation-delay: -3.3s; }
-.stage-info { position: absolute; z-index: 4; left: var(--pad); bottom: 40px; max-width: 420px; animation: infoin 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
 @keyframes infoin { from { opacity: 0; transform: translateY(16px); } }
-.stage-dots { display: flex; gap: 6px; align-items: center; margin-right: 8px; }
-.stage-dots span { position: relative; width: 10px; height: 10px; border-radius: 999px; background: rgba(42, 13, 3, 0.25); overflow: hidden; transition: width 0.4s; }
-.stage-dots span.on { width: 46px; background: rgba(42, 13, 3, 0.18); }
-.stage-dots i { position: absolute; inset: 0; background: #2a0d03; transform-origin: left; animation: fill 3s linear forwards; }
-@keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-.stage-info h2 { font-size: clamp(2rem, 4.4vw, 4rem); color: #2a0d03; }
-.stage-info p { font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.74rem; margin: 10px 0 18px; color: #4a1a08; }
-.btn-flavor { box-shadow: 0 10px 22px -10px rgba(0, 0, 0, 0.5); }
-.stage-arrows { position: absolute; z-index: 4; right: calc(var(--pad) + 60px); bottom: 44px; display: flex; align-items: center; gap: 10px; }
-.stage-arrows button { width: 52px; height: 52px; border-radius: 50%; border: 0; background: #fff; font-size: 1.2rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.4); transition: transform 0.2s; }
-.stage-arrows button:hover { transform: scale(1.08); }
-
 /* ---------------------------------------------------------------- faq + cta */
 .faq { background: var(--cream); padding: clamp(70px, 10vw, 130px) 0; }
 .faq-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 40px; }
@@ -641,14 +612,6 @@ a.contact-card:hover { transform: translateY(-4px); }
   .flavor-meta { left: 12px; right: 12px; bottom: 16px; max-width: none; padding: 14px 16px; }
   .fm-desc { display: none; }
 
-  .sp-0 { top: 46%; height: 46svh; }
-  .sp-1 { left: 82%; top: 22%; height: 18svh; }
-  .sp-2 { left: 18%; top: 24%; height: 18svh; }
-  .stage-info { bottom: 30px; right: var(--pad); }
-  .stage-arrows { right: var(--pad); bottom: 34px; gap: 8px; }
-  .stage-arrows button { width: 44px; height: 44px; }
-  .stage-dots span.on { width: 30px; }
-  .stage-packs::after { display: none; }
 
   .faq-grid, .two-col, .contact-grid, .form, .product-row, .cta-card { grid-template-columns: 1fr; }
   .ph { grid-template-columns: 1fr; min-height: 0; padding-top: 104px; gap: 10px; }
