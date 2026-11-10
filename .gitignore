@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+.venv
+assets/preview
+
+# reference material, not part of the site
+*.mp4
+videoframe_*.png
+BOX Images/
+assets/old/
+__pycache__/
